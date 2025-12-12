@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Detect honeypot tokens by analyzing smart contract addresses on Ethereum and BSC. Check for scam indicators before investing.">
+    <meta name="keywords" content="honeypot detector, token scanner, crypto scam detector, smart contract analyzer">
+    <title>Honeypot Token Detector - Check Contract Safety</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+    <div class="background-gradient"></div>
+    <div class="container">
+        <header class="header">
+            <div class="logo">
+                <svg class="logo-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round" />
+                    <path d="M2 17L12 22L22 17" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round" />
+                    <path d="M2 12L12 17L22 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round" />
+                </svg>
+                <h1>Honeypot Detector</h1>
+            </div>
+            <p class="tagline">Protect your investments from scam tokens</p>
+        </header>
+
+        <main class="main-content">
+            <div class="scanner-card glass-card">
+                <h2>Scan Token Contract</h2>
+                <p class="card-description">Enter a contract address to check for honeypot indicators</p>
+
+                <div class="input-group">
+                    <label for="network-select" class="input-label">Select Network</label>
+                    <div class="select-wrapper">
+                        <select id="network-select" class="network-select">
+                            <option value="eth">Ethereum (ETH)</option>
+                            <option value="bsc">Binance Smart Chain (BSC)</option>
+                            <option value="base">Base</option>
+                        </select>
+                        <svg class="select-icon" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd"
+                                d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                                clip-rule="evenodd" />
+                        </svg>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label for="contract-address" class="input-label">Contract Address</label>
+                    <input type="text" id="contract-address" class="contract-input" placeholder="0x..."
+                        spellcheck="false">
+                </div>
+
+                <button id="scan-button" class="scan-button">
+                    <span class="button-text">Scan Contract</span>
+                    <svg class="button-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M21 21L15 15M17 10C17 13.866 13.866 17 10 17C6.13401 17 3 13.866 3 10C3 6.13401 6.13401 3 10 3C13.866 3 17 6.13401 17 10Z"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                </button>
+
+                <div id="loading-state" class="loading-state hidden">
+                    <div class="spinner"></div>
+                    <p>Analyzing contract...</p>
+                </div>
+            </div>
+
+            <div id="results-container" class="results-container hidden">
+                <div class="results-card glass-card">
+                    <div class="results-header">
+                        <h2>Analysis Results</h2>
+                        <button id="close-results" class="close-button">
+                            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2"
+                                    stroke-linecap="round" stroke-linejoin="round" />
+                            </svg>
+                        </button>
+                    </div>
+
+                    <div id="risk-meter" class="risk-meter">
+                        <div class="risk-meter-header">
+                            <h3>Risk Assessment</h3>
+                            <span id="risk-badge" class="risk-badge"></span>
+                        </div>
+                        <div class="risk-meter-bar">
+                            <div id="risk-fill" class="risk-fill"></div>
+                        </div>
+                    </div>
+
+                    <div id="contract-info" class="contract-info">
+                        <h3>Contract Information</h3>
+                        <div class="info-grid">
+                            <div class="info-item">
+                                <span class="info-label">Address</span>
+                                <span id="info-address" class="info-value"></span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Network</span>
+                                <span id="info-network" class="info-value"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="analysis-details" class="analysis-details">
+                        <h3>Detailed Analysis</h3>
+                        <div id="details-list" class="details-list"></div>
+                    </div>
+
+                    <div class="results-footer">
+                        <a id="explorer-link" class="explorer-link" target="_blank" rel="noopener noreferrer">
+                            View on Explorer
+                            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                    d="M18 13V19C18 19.5304 17.7893 20.0391 17.4142 20.4142C17.0391 20.7893 16.5304 21 16 21H5C4.46957 21 3.96086 20.7893 3.58579 20.4142C3.21071 20.0391 3 19.5304 3 19V8C3 7.46957 3.21071 6.96086 3.58579 6.58579C3.96086 6.21071 4.46957 6 5 6H11M15 3H21M21 3V9M21 3L10 14"
+                                    stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round" />
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div id="error-container" class="error-container hidden">
+                <div class="error-card glass-card">
+                    <div class="error-icon">
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="M12 8V12M12 16H12.01M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z"
+                                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                    </div>
+                    <h3>Error</h3>
+                    <p id="error-message"></p>
+                    <button id="close-error" class="retry-button">Try Again</button>
+                </div>
+            </div>
+
+            <div class="recent-scans">
+                <h3>Recent Scans</h3>
+                <div id="recent-list" class="recent-list">
+                    <p class="empty-state">No recent scans yet</p>
+                </div>
+            </div>
+        </main>
+
+        <footer class="footer">
+            <p>⚠️ Always do your own research. This tool provides indicators but is not financial advice.</p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
